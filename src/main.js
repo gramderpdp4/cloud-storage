@@ -14,8 +14,8 @@ const pinia = createPinia()
 
 addComponents(app)
 
-app.use(router)
 app.use(pinia)
+app.use(router)
 app.use(PrimeVue)
 app.use(ToastService)
 app.use(DialogService)

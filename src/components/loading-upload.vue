@@ -47,13 +47,13 @@ const db = getDatabase(app)
 const auth = getAuth(app)
 const store = usedStorage();
 const storeUser = userStore()
-const uid = storeUser.returnUID()
 
 export default {
     data() {
         return {
             check_svg: check_svg,
             info_svg: info_svg,
+            uid: storeUser.uid,
             error_svg: error_svg,
             modal: inject("dialogRef"),
             files: []
@@ -67,23 +67,18 @@ export default {
             let count_upload_files = 0;
 
             let sum_size_current_uploads = store.used;
-
-            console.log('files size', this.files.length)
-
+            
             for (const f in this.files) {
                 const file = this.files[f];
 
-                console.log('file', f)
-
                 sum_size_current_uploads += file.size;
 
-                console.log('store used', store.used)
-
                 if (sum_size_current_uploads < store.total_storage) {
-                    console.log('passou 1')
+                
                     this.checkFileExistsDatabase(file.name, file)
                         .then( async () => {
                             try {
+                               
                                 await this.upload(file)
                                 .then(() => {
                                     this.files[f].finished = true
@@ -133,7 +128,7 @@ export default {
 
                 const obj_add_id = { ...obj, id: id }
 
-                const path = refDatabase(db, `users/${uid}/files`)
+                const path = refDatabase(db, `users/${this.uid}/files`)
 
                 onValue(path, (output) => {
                     if (!output.exists()) {
@@ -154,6 +149,8 @@ export default {
                             reject()
                         }
                     }
+                }, (error) => {
+                    console.log('error onValue', error)
                 }, { onlyOnce: true })
             })
         },
@@ -168,7 +165,7 @@ export default {
 
                 const fileUpload = new File([rest], file.name, { type: file.type })
 
-                const storageRef = ref(storage, `${uid}/${file.name}`)
+                const storageRef = ref(storage, `${this.uid}/${file.name}`)
 
                 const metadata = {
                     customMetadata: {
@@ -209,6 +206,16 @@ export default {
 
             this.uploadFiles()
         }
+    },
+
+    watch: {
+        'storeUser.uid': {
+            handler() {
+                this.uid = storeUser.uid
+            },
+            immediate: true,
+            deep: true
+         }
     },
 
     mounted() {
