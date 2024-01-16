@@ -1,0 +1,9 @@
+@import url('./base.css');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.p-button.fill {
+    background-color: var(--color-secondary);
+}

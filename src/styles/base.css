@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind utilities;
+
+:root {
+    --color-primary: #EBF2FC;
+    --color-primary-200: #8bd5b4;
+    --color-primary-300: #54c596;
+    --color-primary-500: #00ac6b;
+    --color-primary-600: #009d60;
+    --color-primary-700: #008b53;
+    --color-primary-800: #007a46;
+    --color-secondary: #0c2461;
+    --color-secondary-50: #000000;
+    --color-secondary-100: #b6e4fa;
+    --color-secondary-200: #87d2f6;
+    --color-secondary-300: #5dc0f0;
+    --color-secondary-400: #45b3ee;
+    --color-secondary-500: #38a6ea;
+    --color-secondary-700: #2f85c7;
+    --color-secondary-800: #2b75b3;
+}
