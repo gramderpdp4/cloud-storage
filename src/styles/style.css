@@ -1,7 +1,15 @@
 @import url('./base.css');
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
 }
 
 .p-button.fill {

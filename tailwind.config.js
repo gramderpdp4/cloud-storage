@@ -14,7 +14,14 @@ export default {
         "sm": {'max': '600px'},
         "md": {'min': '601px'}
       },
-      
+      backgroundColor: {
+        'primary': '#EBF2FC',
+        'secondary': '#0c2461'
+      },
+      spacing: {
+        '1/6': '16.666667%',
+        '72vh': '72vh'
+      }
     },
   },
   plugins: [],
