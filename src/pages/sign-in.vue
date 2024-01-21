@@ -5,7 +5,8 @@
             required />
         <Button type="submit" class="p-2 text-white fill" label="Entrar" icon="pi pi-search" :loading="loading" />
     </form>
-    <Button class="btn-signin mt-6" label="Criar conta" @click="changeBeetwenPage" />
+    <Divider type="solid" />
+    <Button class="btn-signin" label="Criar conta" @click="changeBeetwenPage" />
 </template>
 <script>
 import { defineAsyncComponent } from 'vue';

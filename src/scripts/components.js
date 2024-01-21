@@ -7,15 +7,16 @@ import FileUpload from 'primevue/fileupload';
 import DynamicDialog from 'primevue/dynamicdialog'
 import ProgressBar from 'primevue/progressbar';
 import Skeleton from 'primevue/skeleton';
+import Divider from 'primevue/divider';
 
 export const addComponents = (app) => {
     app.component("InputText", InputText)
     app.component("Button", Button)
-    app.component("Toast", Toast)
     app.component("Toast", Toast)
     app.component("FileUpload", FileUpload)
     app.component("DynamicDialog", DynamicDialog)
     app.component("ProgressBar", ProgressBar)
     app.component("Avatar", Avatar)
     app.component("Skeleton", Skeleton)
+    app.component("Divider", Divider)
 };

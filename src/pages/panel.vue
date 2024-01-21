@@ -1,72 +1,74 @@
 <template>
-  <div class="sm:grid sm:gap-8 flex h-full w-full md:overflow-hidden">
-    <div class="h-screen sm:shadow-md md:fixed sm:bg-primary sm:h-fit sm:z-10 sm:fixed sm:top-0 sm:w-full sm:order-last hrink panel md:bg-secondary xl:w-1/6 md:w-1/6">
+  <div class="w-full overflow-auto sm:flex md:h-screen md:flex">
+    <div class="bg-primary lg:fixed md:h-full sm:w-1/3 md:w-2/12 z-10 fixed sm:relative w-full h-26 shadow-md panel">
      <sidebarMenu :name="user.name"/>
     </div>
-    <div class="grow lg:grid xl:flex md:ml-1/6 sm:top-24 sm:relative sm:z-1 sm:order-last sm:max-w-p-100 shrink h-full panel-content sm:flex sm:flex-col md:grid sm:p-0 p-5 md:w-3/4 xl:w-3/4">
-      <div class="flex xl:order-first md:order-last flex-col xl:w-3/4 sm:order-last">
-        <div class="categories">
-          <h2 class="ml-4 mb-4 font-extrabold text-xl" style="color: var(--color-secondary)">Categorias</h2>
-          <div class="xl:flex sm:flex sm:gap-4 touch-pan-x sm:overflow-x-auto sm:max-w-vw-100 md:grid md:grid-cols-4 lg:grid-cols-4 md:gap-3 xl:gap-0">
-            <a v-for="(category, index) in categories" :key="index"
-              class="sm:min-w-36 border-gray-300 md:duration-300 md:ease-in-out md:transform md:transition-transform md:hover:scale-110">
-              <div :style="category.bg_color" class="rounded-2xl sm:w-full mx-4 p-4 text-white xl:w-36 md:w-full">
-                <span class="material-symbols-outlined">
-                  {{ category.icon }}
-                </span>
-                <p class="mt-1 font-bold xl:text-md md:text-sm">{{ category.title }}</p>
-                <p class="text-sm">{{ countFiles(category) }} </p>
+    <div class="bg-primary h-full overflow-auto md:h-full lg:ml-16% sm:w-8/12 md:w-5/6 z-0 sm:pt-5 pt-40 absolute sm:relative w-full">
+      <div class="mx-4 grid lg:flex md:h-full">
+        <div class="flex order-last lg:w-2/3 lg:order-first flex-col h-full">
+          <div class="categories">
+            <h2 class="text-black text-xl my-6 lg:mt-2 font-semibold">Categorias</h2>
+            <div class="flex max-w-95vw md:overflow-hidden sm:flex-wrap md:grid-cols-4 md:flex-auto sm:w-full overflow-auto gap-2">
+              <a v-for="(category, index) in categories" :key="index"
+                class="border-gray-300 md:flex-1">
+                <div :style="category.bg_color" class="rounded-2xl md:w-full sm:w-30vw w-36 p-4 text-white">
+                  <span class="material-symbols-outlined">
+                    {{ category.icon }}
+                  </span>
+                  <p class="mt-1 font-bold text-sm">{{ category.title }}</p>
+                  <p class="text-sm">{{ countFiles(category) }} </p>
+                </div>
+              </a>
+            </div>
+          </div>
+          <h2 class="my-6 text-black font-semibold text-xl">Arquivos recentes</h2>
+          <div class="recent-files md:overflow-auto overflow-x-scroll max-h-screen">
+            <TransitionGroup name="list-files" tag="ul">
+              <ul v-if="files.length > 0">
+                <li v-for="(file, index) in files" :key="index" class="flex justify-between p-4 mb-3
+                bg-white cursor-pointer w-full md:max-w-md rounded-xl border-inherit shadow-sm">
+                  <div class="file-media">
+                    <span class="material-symbols-outlined">
+                      {{ file.icon }}
+                    </span>
+                  </div>
+                  <div class="file-name font-semibold overflow-hidden max-w-40 whitespace-nowrap text-ellipsis"
+                    v-text="file.name"></div>
+                  <small class="file-type uppercase" v-text="file.type"></small>
+                  <small class="file-size capitalize" v-text="file.size"></small>
+                </li>
+              </ul>
+              <div v-else class="flex flex-col items-center mx-auto justify-center mt-5">
+                <img :src="empty_icon" alt="" width="120" />
+                <span class="text-center font-semibold mt-3" style="color: var(--color-secondary)">Nenhum arquivo</span>
               </div>
-            </a>
+            </TransitionGroup>
           </div>
         </div>
-        <h2 class="ml-4 mb-4 mt-10 font-extrabold text-xl" style="color: var(--color-secondary)">Arquivos recentes</h2>
-        <div class="recent-files overflow-x-scroll sm:max-h-screen md:h-screen">
-          <TransitionGroup name="list-files" tag="ul">
-            <div v-if="files.length > 0">
-              <li v-for="(file, index) in files" :key="index" class="flex justify-between
-              p-4 ml-4 mb-3 xl:max-w-md sm:w-3/4 lg:w-3/4 md:w-3/4 bg-white cursor-pointer rounded-xl border-inherit shadow-sm
-              duration-300 ease-in-out transform transition-transform hover:scale-105
-              ">
-                <div class="file-media">
-                  <span class="material-symbols-outlined">
-                    {{ file.icon }}
-                  </span>
-                </div>
-                <div class="file-name font-semibold overflow-hidden lg:max-w-40 whitespace-nowrap text-ellipsis"
-                  v-text="file.name"></div>
-                <small class="file-type uppercase" v-text="file.type"></small>
-                <small class="file-size capitalize" v-text="file.size"></small>
-              </li>
+        <div class="container-top sm:items-center lg:h-fit lg:p-5 lg:justify-normal lg:mt-2 lg:grid lg:ml-5 lg:w-1/3 sm:gap-3 sm:flex rounded-xl shadow h-full relative p-4 justify-around">
+          <div class="upload-file rounded-xl 
+           w-auto relative">
+            <input type="file" class="hidden" multiple id="file" @input="newFile($event)">
+            <label for="file" class="flex flex-col items-center mx-auto justify-center cursor-pointer 
+            md:duration-300 md:ease-in-out md:transform md:transition-transform md:hover:scale-110">
+              <img :src="upload_icon" alt="" />
+              <span class="text-center font-semibold sm:text-sm" style="color: var(--color-secondary-700)">Carregar arquivos</span>
+            </label>
+          </div>
+          <Divider type="solid" class="sm:hidden lg:block"/>
+          <Divider type="solid" class="hidden sm:block lg:hidden" layout="vertical" />
+          <div class="storage rounded-xl">
+            <div class="grid">
+              <div class="flex justify-between">
+                <strong class="text-xs" style="color: var(--color-secondary)">Seu armazenamento</strong>
+                <small class="font-semibold sm:ml-4 inline-block text-xs" style="color: var(--color-secondary-700)">Restam {{ lack_percent }}%</small>
+              </div>
+              <p class="text-xs mb-2 mt-4" style="color: var(--color-secondary)">{{ used_storage }} de 100MB já usados</p>
+              <ProgressBar :value="used_percent" :pt="{
+                value: { style: { background: 'linear-gradient(to right, #2b75b3, #45b3ee)', fontSize: '0.8rem' } }
+              }">
+              </ProgressBar>
             </div>
-            <div v-else class="flex flex-col items-center mx-auto justify-center mt-5">
-              <img :src="empty_icon" alt="" width="120" />
-              <span class="text-center font-semibold mt-3" style="color: var(--color-secondary)">Nenhum arquivo</span>
-            </div>
-          </TransitionGroup>
-        </div>
-      </div>
-      <div class="container-top shadow lg:justify-center xl:grid xl:bg-white md:justify-between md:gap-2 md:items-center md:h-fit md:flex sm:h-fit sm:bg-none xl:ml-4 rounded-xl h-full relative sm:px-1 p-6 xl:w-1/3">
-        <div class="upload-file md:border-slate-300 md:border-2 xl:order-first xl:mb-6 xl:py-12 md:p-4 md:order-first rounded-xl 
-         w-auto sm:shadow-2xl h-auto py-14 px-12 sm:py-4 sm:px-4 relative sm:fixed sm:bottom-2 sm:right-2">
-          <input type="file" class="hidden" multiple id="file" @input="newFile($event)">
-          <label for="file" class="flex flex-col items-center mx-auto justify-center cursor-pointer 
-          md:duration-300 md:ease-in-out md:transform md:transition-transform md:hover:scale-110">
-            <img :src="upload_icon" alt="" />
-            <span class="text-center font-semibold sm:text-sm" style="color: var(--color-secondary-700)">Carregar arquivos</span>
-          </label>
-        </div>
-        <div class="storage sm:border-slate-300 sm:mx-2 sm:border-2 md:border-slate-300 md:border-2 md:mt-0 mt-8 bg-gray-100 p-3 rounded-xl">
-          <div class="grid">
-            <div class="flex justify-between">
-              <strong class="text-xs" style="color: var(--color-secondary)">Seu armazenamento</strong>
-              <small class="font-semibold md:ml-4 inline-block text-xs" style="color: var(--color-secondary-700)">Restam {{ lack_percent }}%</small>
-            </div>
-            <p class="text-xs mb-2 mt-4" style="color: var(--color-secondary)">{{ used_storage }} de 100MB já usados</p>
-            <ProgressBar :value="used_percent" :pt="{
-              value: { style: { background: 'linear-gradient(to right, #2b75b3, #45b3ee)', fontSize: '0.8rem' } }
-            }">
-            </ProgressBar>
           </div>
         </div>
       </div>
@@ -207,7 +209,9 @@ export default {
           const name = metadata.name.split('.');
           const size = metadata.size;
           const id = metadata.generation;
-          
+
+          console.log("file id", id)
+
           if (name[1]) {
             const { type, icon } = fileType(name[1])
 

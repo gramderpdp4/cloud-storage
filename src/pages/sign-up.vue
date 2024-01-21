@@ -5,14 +5,16 @@
         <InputText class="border-2 p-3 bg-gray-100" name="password" id="value" placeholder="Senha" type="password" required />
         <Button type="submit" class="p-2 text-white fill" label="Criar conta" icon="pi pi-search" :loading="loading" />
     </form>
-    <div class="divide-y divide-yellow-500 divide-dashed my-4 relative"></div>
+    <Divider type="solid" />
     <p class="text-center">
         Já possui uma conta? 
         <Button class="btn-signin" label="Entrar" @click="changeBeetwenPage" />
     </p>
 </template>
 <script>
+import { defineAsyncComponent } from 'vue';
 import { createUser } from '../scripts/sign-up.js';
+const signInMessages = defineAsyncComponent(() => import('../components/sign-in-messages.vue'))
 
 export default {
     data() {
@@ -39,19 +41,28 @@ export default {
                     email: form_signup.email.value, 
                     password: form_signup.password.value, 
                     name: form_signup.name.value
-                }, this.$toast )
-                .then(success => {
-                    this.$toast.add({
-                        severity: 'success',
-                        summary: 'Conta criada',
-                        detail: 'Faça login',
-                        life: 2500,
-                    })
-
+                })
+                .then((success) => {
                     this.$router.push({ name: 'signin' })
                 })
-                .catch(error => {
-                    console.log(`Houve algum erro ao criar o usuário`, error)
+                .catch((error) => {
+                    const { message } = error;
+
+                    this.$dialog.open(signInMessages, {
+                        props: {
+                            header: 'Ops !',
+                            modal: true,
+                            style: {
+                                width: '30vw',
+                            },
+                            breakpoints: {
+                                '640px': '90vw'
+                            },
+                        },
+                        data: {
+                            text: message
+                        }
+                    })
                 })
                 .finally(() => {
                     this.loading = false;

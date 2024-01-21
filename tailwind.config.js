@@ -10,17 +10,19 @@ export default {
         'vw-100': '100vw',
         'p-100': '100%'
       },
-      screens: {
-        "sm": {'max': '600px'},
-        "md": {'min': '601px'}
-      },
       backgroundColor: {
         'primary': '#EBF2FC',
         'secondary': '#0c2461'
       },
       spacing: {
         '1/6': '16.666667%',
-        '72vh': '72vh'
+        '72vh': '72vh',
+        '95vw': '92vw',
+        '30vw': '29.5vw',
+        '16%': '16.6666%'
+      },
+      boxShadow: {
+        "3x1": 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px'
       }
     },
   },

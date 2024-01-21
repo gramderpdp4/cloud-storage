@@ -5,7 +5,7 @@ import app from './firebase'
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-export const createUser = (obj, toast) => {
+export const createUser = (obj) => {
     return new Promise((resolve, reject) => {
         const { email, password, name } = obj;
 
@@ -18,29 +18,20 @@ export const createUser = (obj, toast) => {
         .catch(error => {
             const code = error.code;
 
-            console.log(code)
+            let message;
 
             switch (code) {
                 case 'auth/email-already-in-use':
-                    toast.add({
-                        summary: 'Ops',
-                        detail: 'Essa conta já existe',
-                        severity: 'warn',
-                        life: 2500
-                    })
+                    message = 'Essa conta já existe';
                 break;
 
                 case 'auth/weak-password':
-                    toast.add({
-                        summary: 'Ops',
-                        detail: 'Sua senha deve conter no mínimo 6 caracteres',
-                        severity: 'warn',
-                        life: 4000
-                    })
+                    message = 'Sua senha está muito curta';
                 break;
 
             }
-            reject(error)
+            
+            reject({ message: message })
         })
     })
 }
