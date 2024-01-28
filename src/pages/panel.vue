@@ -25,7 +25,7 @@
           <div class="recent-files md:overflow-auto overflow-x-scroll max-h-screen">
             <TransitionGroup name="list-files" tag="ul">
               <ul v-if="files.length > 0">
-                <li v-for="(file, index) in files" :key="index" class="flex justify-between p-4 mb-3
+                <li v-for="(file, index) in files" :key="index" @click="fileActions(file.name, file.id, file.fullname)"  class="flex justify-between p-4 mb-3
                 bg-white cursor-pointer w-full md:max-w-md rounded-xl border-inherit shadow-sm">
                   <div class="file-media">
                     <span class="material-symbols-outlined">
@@ -78,13 +78,14 @@
 <script>
 import { listFiles } from '../scripts/list-files.js';
 import { fileType } from '../scripts/type-file.js'
-import { usedStorage } from '../stores/used-storage.js';
+import { usedStorage } from '../stores/storage.js';
 import { userStore } from '../stores/user-store.js';
 import loadingUploadVue from '../components/loading-upload.vue'
 import upload_icon from '../assets/upload.svg'
 import empty_icon from '../assets/empty.svg'
 import SkeletonFiles from '../components/skeleton-files.vue';
 import sidebarMenu from '../components/sidebar-menu.vue';
+import dialogActions from '../components/dialog-actions.vue';
 
 const store = usedStorage();
 const storeUser = userStore();
@@ -145,6 +146,17 @@ export default {
       },
       immediate: true,
       deep: true
+    },
+    'files': {
+      handler(newFiles, oldFiles){
+        console.log({ newFiles, oldFiles })
+        if ( newFiles !== oldFiles ) {
+          const file_removed = oldFiles.filter(file => !newFiles.includes(file));
+
+          console.log('file removed', file_removed)
+        }
+      },
+      deep: true,
     }
   },
 
@@ -187,6 +199,42 @@ export default {
       }
     },
 
+    fileActions(filename, id, fullname) {
+      const fileIndex = this.files.findIndex(find => find.id == id);
+      const fullname_split = fullname.split('.');
+      const { type } = fileType(fullname_split[fullname_split.length - 1]);
+      const category_index = this.categories.findIndex(category => category.type == type);
+      
+      if (fileIndex !== -1) {
+        const dialog = this.$dialog.open(dialogActions, {
+        props: {
+          header: fullname,
+          modal: true,
+          style: {
+              width: '350px',
+            },
+            breakpoints: {
+              '500px': '93vw'
+          },
+        },
+        data: {
+          fullname: fullname,
+          filename: filename,
+          updated: () => {
+            this.files.splice(fileIndex, 1)  
+            this.getFiles()
+
+            if ( category_index !== -1 ) {
+              this.categories[category_index].count -= 1
+            }
+
+            dialog.close()
+          }
+        }
+      })
+      }
+    },
+
     countFiles(category) {
       return category.count > 1 ? `${category.count} arquivos` : `${category.count} arquivo`
     },
@@ -207,23 +255,25 @@ export default {
           const metadata = file.metadata;
           const custom = metadata.customMetadata;
           const name = metadata.name.split('.');
+          const fullname = metadata.name;
           const size = metadata.size;
+          const fullpath = metadata.fullPath;
           const id = metadata.generation;
 
-          console.log("file id", id)
-
           if (name[1]) {
-            const { type, icon } = fileType(name[1])
+            const { type, icon } = fileType(name[name.length - 1])
 
             const index = this.categories.findIndex(find => find.type == type);
 
             if (this.files.filter(filter => filter.id == id).length == 0) {
-              this.files.push({ name: name[0], type: name[1], size: custom.sizeCustom, icon: icon, id: id })
+              this.files.push({
+                fullname: fullname, name: name.slice(0, -1).join('.'), type: name[name.length - 1], 
+                size: custom.sizeCustom, icon: icon, id: id 
+              })
               if (index !== -1) {
                 this.categories[index].count += 1
               }
             }
-
           }
         })
       }

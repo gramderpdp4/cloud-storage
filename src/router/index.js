@@ -7,12 +7,17 @@ const auth = getAuth(app)
 const authState = (to, from, next) => {
   onAuthStateChanged(auth, (state) => {
     if (state) {
-      if (to.name != 'panel') next({ name: 'panel' })
-      else next()
-
+      if (to.name != 'panel') {
+        next({ name: 'panel'})
+      } else {
+        next()
+      }
     } else {
-      if (to.name != 'home') next({ name: 'home' })
-      else next()
+      if (to.name != 'panel') {
+        next()
+      } else {
+        next({ name: 'home'})
+      }
     }
   })
 }

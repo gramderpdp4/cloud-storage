@@ -10,6 +10,7 @@ body {
     padding: 0px;
     margin: 0px;
     width: 100%;
+    user-select: none;
     overflow: hidden;
 }
 
@@ -19,4 +20,16 @@ body {
 
 .p-divider {
     border-width: 1px;
+}
+
+.p-dialog-spinner {
+    filter: blur(1.5px);
+    pointer-events: none !important;
+}
+
+.p-dialog-header span {
+    max-width: 90%;
+    text-overflow: ellipsis;
+    white-space: break-spaces;
+    overflow: hidden;
 }

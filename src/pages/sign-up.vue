@@ -77,3 +77,10 @@ export default {
     }
 }
 </script>
+<style>
+    @media (max-width: 300px) {
+        .p-inputtext {
+            width: 100%
+        }
+    }
+</style>

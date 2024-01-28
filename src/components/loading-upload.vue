@@ -40,7 +40,7 @@ import { getStorage, ref, uploadBytes, updateMetadata } from 'firebase/storage'
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref as refDatabase, onValue, push, query, orderByChild, equalTo } from 'firebase/database';
 import { userStore } from '../stores/user-store.js';
-import { usedStorage } from '../stores/used-storage';
+import { usedStorage } from '../stores/storage.js';
 
 const storage = getStorage(app);
 const db = getDatabase(app)
@@ -91,9 +91,7 @@ export default {
                             }
                         })
                         .catch((error) => {
-                            console.log('erro ao checar database', error)
                             this.files[f].finished = 'file_exists'
-                            console.log('error file exists', error)
                         })
                         .finally(() => {
                             count_upload_files++
@@ -124,7 +122,7 @@ export default {
         checkFileExistsDatabase(id, obj) {
             return new Promise((resolve, reject) => {
 
-                id = this.removeSpecialCaracteres(id);
+                id = store.removeSpecialCaracteres(id)
 
                 const obj_add_id = { ...obj, id: id }
 
@@ -153,10 +151,6 @@ export default {
                     console.log('error onValue', error)
                 }, { onlyOnce: true })
             })
-        },
-
-        removeSpecialCaracteres(txt) {
-            return txt.replace(/[^\w\s]/gi, '').replaceAll(" ", "")
         },
 
         async upload(file) {
@@ -188,7 +182,7 @@ export default {
 
         organizeFiles() {
             this.modal.data.files.forEach(file => {
-                const type = file.name.split('.')[1];
+                const type = file.name.split('.');
 
                 const obj_file = {
                     lastModified: file.lastModified,
@@ -199,7 +193,7 @@ export default {
                     name: file.name
                 }
 
-                const add = { ...obj_file, finished: false, fileType: type, fileSize: sizeFile(file.size) };
+                const add = { ...obj_file, finished: false, fileType: type[type.length - 1], fileSize: sizeFile(file.size) };
 
                 this.files.push(add)
             })

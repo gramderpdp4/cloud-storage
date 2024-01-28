@@ -8,6 +8,8 @@ import DynamicDialog from 'primevue/dynamicdialog'
 import ProgressBar from 'primevue/progressbar';
 import Skeleton from 'primevue/skeleton';
 import Divider from 'primevue/divider';
+import Listbox from 'primevue/listbox'
+import BlockUI from 'primevue/blockui';
 
 export const addComponents = (app) => {
     app.component("InputText", InputText)
@@ -19,4 +21,6 @@ export const addComponents = (app) => {
     app.component("Avatar", Avatar)
     app.component("Skeleton", Skeleton)
     app.component("Divider", Divider)
+    app.component("Listbox", Listbox)
+    app.component("BlockUI", BlockUI)
 };

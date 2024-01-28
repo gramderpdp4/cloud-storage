@@ -1,7 +1,7 @@
 <template>
    <div class="container flex justify-center items-center h-screen bg-primary">
       <Navbar />
-      <div class="h-auto rounded-3xl fixed m-auto left-auto right-auto top-auto mx-4">
+      <div class="h-auto sm:mx-6 rounded-3xl w-11/12 sm:w-fit fixed sm:m-auto top-auto mx-4">
          <h4 class="text-black text-center text-2xl mb-7">
             Todos os seus arquivos em um <strong style="color: var(--color-secondary); 
             background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(12,36,97,1) 35%, rgba(0,212,255,1) 100%);
@@ -10,13 +10,13 @@
             font-weight: 900
             ">Lugar seguro</strong>
          </h4>
-         <div class="mt-1 shadow-3x1 bg-primary rounded-2xl sm:w-full">
+         <div class="shadow-3x1 bg-primary rounded-2xl sm:w-full">
             <div class="sm:flex flex-row divide-x">
                <div class="pr-5 justify-center hidden sm:auto sm:justify-center sm:flex sm:items-center">
                   <StorageSvg class="sm:w-9/12 md:w-8/12 lg:w-8/12 p-6 m-auto"/>
                </div>
                <div class="bg-white rounded-3xl">
-                  <div class="grid items-center p-10 h-fit min-h-60">
+                  <div class="grid items-center p-6 sm:p-10 h-fit min-h-60">
                      <SignUpPage v-if="isSignUp" :changedPage="changedSignInSignUp" />
                      <SignInPage v-else :changedPage="changedSignInSignUp" />
                   </div>
