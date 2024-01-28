@@ -149,11 +149,9 @@ export default {
     },
     'files': {
       handler(newFiles, oldFiles){
-        console.log({ newFiles, oldFiles })
+   
         if ( newFiles !== oldFiles ) {
           const file_removed = oldFiles.filter(file => !newFiles.includes(file));
-
-          console.log('file removed', file_removed)
         }
       },
       deep: true,
@@ -169,6 +167,8 @@ export default {
   },
 
   methods: {
+
+    //Faz upload de novo arquivo
     newFile(event) {
       const files = event.target.files
 
@@ -199,6 +199,7 @@ export default {
       }
     },
 
+    //Ações do arquivo ( Excluir, baixar, etc )
     fileActions(filename, id, fullname) {
       const fileIndex = this.files.findIndex(find => find.id == id);
       const fullname_split = fullname.split('.');
@@ -235,10 +236,12 @@ export default {
       }
     },
 
+    //Confere se existe apenas 1 arquivo na categoria para adicionar ou não 'arquivo' no plural
     countFiles(category) {
       return category.count > 1 ? `${category.count} arquivos` : `${category.count} arquivo`
     },
 
+    //Pega dados como: armazenamento máximo permitido e armazenamento utilizado
     async getUsedStorage() {
       const { used, percent, lack } = await store.returnStoredUsed()
 
@@ -247,6 +250,7 @@ export default {
       this.lack_percent = lack.toFixed(2)
     },
 
+    //Lista todos os arquivos
     async getFiles() {
       const { files } = await listFiles()
 
@@ -281,6 +285,7 @@ export default {
       this.getUsedStorage()
     },
 
+    //Pega dados do usuário
     async getUser() {
       const user = await storeUser.returnUser();
 

@@ -61,6 +61,7 @@ export default {
     },
 
     methods: {
+        //Inicia o upload dos arquivos e confere se o armazenamento vai ser comprometido
         async uploadFiles(files) {
             const element_title = document.querySelector(".p-dialog-title");
 
@@ -112,13 +113,13 @@ export default {
                             }, 100)
                         })
                 } else {
-                    console.log('limite excedido')
                     this.files[f].finished = 'exceeded_storage'
                     element_title.innerText = 'Armazenamento cheio'
                 }
             }
         },
 
+        //Confere se o arquivo já existe no banco de dados
         checkFileExistsDatabase(id, obj) {
             return new Promise((resolve, reject) => {
 
@@ -153,6 +154,7 @@ export default {
             })
         },
 
+        //Função de upload para o firebase
         async upload(file) {
             return new Promise((resolve, reject) => {
                 const { fileType, fileSize, ...rest } = file
@@ -168,6 +170,7 @@ export default {
                     }
                 }
 
+                //Inicia o upload para o firebase
                 uploadBytes(storageRef, fileUpload, metadata)
                     .then(output => {
                         console.log('upload bem sucedido')

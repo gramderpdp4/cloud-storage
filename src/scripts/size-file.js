@@ -1,3 +1,5 @@
+
+//Função para calcular o tamanho do arquivo
 export const sizeFile = (bytes, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
 

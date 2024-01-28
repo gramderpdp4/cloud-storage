@@ -16,6 +16,7 @@ export const usedStorage = defineStore('storage', {
         used_percent: 0
     }),
     actions: {
+        //Retorna os arquivos atuais para calcular o armazenamento já utilizado
         returnStoredUsed() {
             return new Promise((resolve, reject) => {
                 const uid = user.returnUID();
@@ -62,6 +63,7 @@ export const usedStorage = defineStore('storage', {
             })
         },
 
+        //Remove um arquivo especifico
         removeFile(fullname, filename) {
             return new Promise( async (resolve, reject) => {
                 const database_ref = refDatabase(db, `users/${user.returnUID()}/files`)
@@ -94,12 +96,15 @@ export const usedStorage = defineStore('storage', {
             })
         },
 
+        //Remove caracteres especiais do nome do arquivo
         removeSpecialCaracteres(id) {
             return id.replace(/[^\w\s]/gi, '').replaceAll(" ", "")
         }
     }
 })
 
+
+//Calcula o percentual já utilizado levando em consideração o total permitido
 const calculatedPercent = (used, total) => {
    return new Promise((resolve, reject) => {
     const percent = ( used / total ) * 100;

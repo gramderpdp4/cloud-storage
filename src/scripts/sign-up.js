@@ -5,6 +5,7 @@ import app from './firebase'
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+//Cria a conta do usuário no Firebase auth
 export const createUser = (obj) => {
     return new Promise((resolve, reject) => {
         const { email, password, name } = obj;
@@ -36,6 +37,7 @@ export const createUser = (obj) => {
     })
 }
 
+//Cria o usuário no Firebase Database
 const createUserInDatabase = (uid, obj) => {
     const path = ref(db, `users/${uid}`);
 

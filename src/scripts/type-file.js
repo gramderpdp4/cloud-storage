@@ -1,3 +1,6 @@
+
+
+//Função para identificar o tipo do arquivo ( imagem, video, audio, documento ou não identificado )
 export const fileType = (ext) => {
 
     if (ext) {

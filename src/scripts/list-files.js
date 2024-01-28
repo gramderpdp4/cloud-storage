@@ -5,6 +5,7 @@ import { userStore } from '../stores/user-store';
 const storage = getStorage(app);
 const user = userStore();
 
+//Função para listar os arquivos do usuário
 export const listFiles = () => {
     return new Promise((resolve, reject) => {
         const uid = user.returnUID();

@@ -4,6 +4,7 @@ import moment from "moment-timezone";
 
 const db = getDatabase(app);
 
+//Após upload no firebase storage, salva as informações do arquivo e outras informações adicionais no banco
 export const saveInfoFileDatabase = (file, uid) => {
     const path = ref(db, `users/${uid}/files/`);
 

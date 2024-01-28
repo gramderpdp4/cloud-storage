@@ -12,6 +12,7 @@ export const userStore = defineStore('user', {
     }),
 
     actions: {
+        //Retorna dados do usuário
         returnUser() {
             return new Promise((resolve, reject) => {
                 const path = ref(db, `users/${this.uid}`);
@@ -24,10 +25,12 @@ export const userStore = defineStore('user', {
             })
         },
 
+        //Retona o código de identificação do usuário
         returnUID() {
             return this.uid
         },
 
+        //Evita erros nas trocas de conta
         changedUser() {
             onAuthStateChanged(auth, (user) => {
                 if (user) {

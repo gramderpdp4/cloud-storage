@@ -21,5 +21,3 @@ app.use(ToastService)
 app.use(DialogService)
 
 app.mount('#app')
-
-console.log('width', window.innerWidth)
