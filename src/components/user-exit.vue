@@ -30,9 +30,5 @@
                 this.modal.data.exit()
             }
         },
-
-        mounted() {
-          
-        }
     }
 </script>
