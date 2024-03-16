@@ -12,9 +12,8 @@
     </p>
 </template>
 <script>
-import { defineAsyncComponent } from 'vue';
 import { createUser } from '../scripts/sign-up.js';
-const signInMessages = defineAsyncComponent(() => import('../components/sign-in-messages.vue'))
+import signInMessages from '../components/sign-in-messages.vue'
 
 export default {
     data() {

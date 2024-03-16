@@ -8,7 +8,7 @@ const authState = (to, from, next) => {
   onAuthStateChanged(auth, (state) => {
     if (state) {
       if (to.name != 'panel') {
-        next({ name: 'panel'})
+        next({ name: 'panel', replace: true })
       } else {
         next()
       }
@@ -16,7 +16,7 @@ const authState = (to, from, next) => {
       if (to.name != 'panel') {
         next()
       } else {
-        next({ name: 'home'})
+        next({ name: 'home', replace: true })
       }
     }
   })
@@ -45,6 +45,7 @@ const routes = [
     path: '/panel',
     name: 'panel',
     beforeEnter: authState,
+    meta: { cleanRoute: true },
     component: () => import('../pages/panel.vue')
   }
 ]

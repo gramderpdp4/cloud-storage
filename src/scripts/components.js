@@ -10,6 +10,7 @@ import Skeleton from 'primevue/skeleton';
 import Divider from 'primevue/divider';
 import Listbox from 'primevue/listbox'
 import BlockUI from 'primevue/blockui';
+import ProgressSpinner from 'primevue/progressspinner';
 
 export const addComponents = (app) => {
     app.component("InputText", InputText)
@@ -23,4 +24,5 @@ export const addComponents = (app) => {
     app.component("Divider", Divider)
     app.component("Listbox", Listbox)
     app.component("BlockUI", BlockUI)
+    app.component("ProgressSpinner", ProgressSpinner)
 };

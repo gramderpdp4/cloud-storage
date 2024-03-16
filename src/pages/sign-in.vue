@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="signIn" class="grid gap-5" id="signin">
-        <InputText name="email" class="border-2 p-3 bg-gray-100" id="value" type="text" placeholder="E-mail" required />
+        <InputText name="email" class="border-2 p-3 bg-gray-100" id="value" type="email" placeholder="E-mail" required />
         <InputText class="border-2 p-3 bg-gray-100" id="value" placeholder="Senha" name="password" type="password"
             required />
         <Button type="submit" class="p-2 text-white fill" label="Entrar" icon="pi pi-search" :loading="loading" />
@@ -11,7 +11,7 @@
 <script>
 import { defineAsyncComponent } from 'vue';
 import { loginUser } from '../scripts/sign-in';
-const signInMessages = defineAsyncComponent(() => import('../components/sign-in-messages.vue'))
+import signInMessages from '../components/sign-in-messages.vue'
 
 export default {
     data() {
@@ -43,7 +43,7 @@ export default {
 
                 loginUser(email.value, password.value)
                     .then(success => {
-                        this.$router.push({ name: 'panel' })
+                        this.$router.replace({ name: 'panel' })
                     })
                     .catch(error => {
                         const code = error.code;

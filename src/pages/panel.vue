@@ -1,15 +1,15 @@
 <template>
-  <div class="w-full overflow-auto sm:flex md:h-screen md:flex">
-    <div class="bg-primary lg:fixed md:h-full sm:w-1/3 md:w-2/12 z-10 fixed sm:relative w-full h-26 shadow-md panel">
+  <div class="w-full h-full sm:flex md:h-screen md:flex">
+    <div class="bg-primary sm:h-screen lg:fixed md:h-full sm:w-1/3 md:w-2/12 z-10 fixed sm:relative w-full h-26 shadow-md panel">
      <sidebarMenu :name="user.name"/>
     </div>
-    <div class="bg-primary h-full overflow-auto md:h-full lg:ml-16% sm:w-8/12 md:w-5/6 z-0 sm:pt-5 pt-40 absolute sm:relative w-full">
+    <main class="bg-primary h-screen sm:overflow-y-scroll overflow-auto lg:ml-16% sm:w-8/12 md:w-5/6 z-0 sm:pt-5 pt-40 absolute sm:relative w-full">
       <div class="mx-4 grid lg:flex md:h-full">
-        <div class="flex order-last lg:w-2/3 lg:order-first flex-col h-full">
+        <div class="flex order-last lg:w-2/3 lg:order-first flex-col mb-6 sm:mb-0">
           <div class="categories">
             <h2 class="text-black text-xl my-6 lg:mt-2 font-semibold">Categorias</h2>
             <div class="flex max-w-95vw md:overflow-hidden sm:flex-wrap md:grid-cols-4 md:flex-auto sm:w-full overflow-auto gap-2">
-              <a v-for="(category, index) in categories" :key="index"
+              <div v-for="(category, index) in categories" :key="index"
                 class="border-gray-300 md:flex-1">
                 <div :style="category.bg_color" class="rounded-2xl md:w-full sm:w-30vw w-36 p-4 text-white">
                   <span class="material-symbols-outlined">
@@ -18,13 +18,16 @@
                   <p class="mt-1 font-bold text-sm">{{ category.title }}</p>
                   <p class="text-sm">{{ countFiles(category) }} </p>
                 </div>
-              </a>
+              </div>
             </div>
           </div>
           <h2 class="my-6 text-black font-semibold text-xl">Arquivos recentes</h2>
-          <div class="recent-files md:overflow-auto overflow-x-scroll max-h-screen">
+          <div class="recent-files">
             <TransitionGroup name="list-files" tag="ul">
-              <ul v-if="files.length > 0">
+              <div v-if="filesLoading" class="flex justify-center p-5">
+                <ProgressSpinner style="width: 50px; height: 50px" strokeWidth="2" />
+              </div>
+              <ul v-else-if="files.length > 0">
                 <li v-for="(file, index) in files" :key="index" @click="fileActions(file.name, file.id, file.fullname)"  class="flex justify-between p-4 mb-3
                 bg-white cursor-pointer w-full md:max-w-md rounded-xl border-inherit shadow-sm">
                   <div class="file-media">
@@ -45,7 +48,7 @@
             </TransitionGroup>
           </div>
         </div>
-        <div class="container-top sm:items-center lg:h-fit lg:p-5 lg:justify-normal lg:mt-2 lg:grid lg:ml-5 lg:w-1/3 sm:gap-3 sm:flex rounded-xl shadow h-full relative p-4 justify-around">
+        <div class="mt-4 container-top sm:items-center lg:h-fit lg:p-5 lg:justify-normal lg:mt-2 lg:grid lg:ml-5 lg:w-1/3 sm:gap-3 sm:flex rounded-xl shadow h-full relative p-4 justify-around">
           <div class="upload-file rounded-xl 
            w-auto relative">
             <input type="file" class="hidden" multiple id="file" @input="newFile($event)">
@@ -72,7 +75,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 <script>
@@ -83,7 +86,7 @@ import { userStore } from '../stores/user-store.js';
 import loadingUploadVue from '../components/loading-upload.vue'
 import upload_icon from '../assets/upload.svg'
 import empty_icon from '../assets/empty.svg'
-import SkeletonFiles from '../components/skeleton-files.vue';
+import skeletonFiles from '../components/skeleton-files.vue';
 import sidebarMenu from '../components/sidebar-menu.vue';
 import dialogActions from '../components/dialog-actions.vue';
 
@@ -100,6 +103,7 @@ export default {
       used_percent: 0,
       user: {},
       files: [],
+      filesLoading: true,
       categories: [
         {
           title: 'Fotos',
@@ -134,7 +138,7 @@ export default {
   },
 
   components: {
-    SkeletonFiles, loadingUploadVue, sidebarMenu
+    skeletonFiles, loadingUploadVue, sidebarMenu
   },
 
   watch: {
@@ -181,7 +185,7 @@ export default {
               width: '30vw',
             },
             breakpoints: {
-              '640px': '90vw'
+             '1020px': '40vw' ,'700px': '60vw', '575px': '90vw'
             },
             header: `Fazendo upload de ${obj.length} arquivos`,
             modal: true
@@ -230,6 +234,15 @@ export default {
             }
 
             dialog.close()
+
+            setTimeout(() => {
+              this.$toast.add({
+                severity: 'info',
+                summary: 'Arquivo removido',
+                detail: `${fullname} foi removido`,
+                life: 3000
+              })
+            }, 50)
           }
         }
       })
@@ -253,6 +266,8 @@ export default {
     //Lista todos os arquivos
     async getFiles() {
       const { files } = await listFiles()
+
+      this.filesLoading = false
 
       if (files.length > 0) {
         files.forEach(file => {

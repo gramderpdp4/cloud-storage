@@ -35,13 +35,8 @@ export default {
 
             storeStorage.removeFile(file_fullname, this.modal.data.filename)
             .then(() => {
+                dialogSpinner(false)
                 this.modal.data.updated()
-                this.$toast.add({
-                    severity: 'info',
-                    summary: 'Arquivo removido',
-                    detail: `${file_fullname} foi removido`,
-                    life: 3000
-                })
             })
             .catch((error) => {
                 this.$toast.add({

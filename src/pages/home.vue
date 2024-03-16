@@ -1,7 +1,7 @@
 <template>
    <div class="container flex justify-center items-center h-screen bg-primary">
       <Navbar />
-      <div class="h-auto sm:mx-6 rounded-3xl w-11/12 sm:w-fit fixed sm:m-auto top-auto mx-4">
+      <div class="max-lg:landscape:mt-4 rounded-3xl w-11/12 sm:w-fit fixed top-auto mx-4">
          <h4 class="text-black text-center text-2xl mb-7">
             Todos os seus arquivos em um <strong style="color: var(--color-secondary); 
             background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(12,36,97,1) 35%, rgba(0,212,255,1) 100%);
@@ -52,7 +52,7 @@ export default {
 
          this.isSignUp = !this.isSignUp
 
-         this.$router.push({ name: path })
+         this.$router.replace({ name: path })
       }
    },
 

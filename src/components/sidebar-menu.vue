@@ -9,14 +9,16 @@
             <h4 v-else class="mt-2 text-center text-black font-semibold">{{ username }}</h4>
         </div>
     </div>
-    <div class="relative sm:mt-72vh sm:block md:grid md:-ml-3 hidden">
+    <div class="relative sm:mt-72vh sm:block md:grid md:-ml-3 mb-3">
         <ul class="text-black">
-          <a class="sm:flex sm:justify-center sm:items-center cursor-pointer" @click="logout">
-            <span class="material-symbols-outlined">
-              logout
-            </span>
-            <span href="#" class="ml-2 font-normal lg:block md:justify-center md-flex">Sair</span>
-          </a>
+          <li>
+            <a class="flex items-center justify-center sm:flex sm:justify-center sm:items-center cursor-pointer" @click="logout">
+                <span class="material-symbols-outlined">
+                  logout
+                </span>
+                <span href="#" class="ml-2 font-normal lg:block md:justify-center md-flex">Sair</span>
+              </a>
+          </li>
         </ul>
     </div>
 </template>
@@ -61,7 +63,7 @@
                     exit: () => {
                         dialog.close()
                         userLogout()
-                        .then(this.$router.push({ name: 'home' }))
+                        .then(this.$router.push({ name: 'home', replace: true }))
                     }
                     },
                 })

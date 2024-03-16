@@ -10,12 +10,10 @@
     "format": "npx prettier . --write"
   },
   "dependencies": {
-    "filepond": "^4.30.6",
     "firebase": "^10.7.1",
     "pinia": "^2.1.7",
     "primevue": "^3.46.0",
     "vue": "^3.3.4",
-    "vue-filepond": "^7.0.4",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
